@@ -7,15 +7,52 @@ export default function SecurityPanel() {
   async function clearSafe(){ await apiGet("/clear"); refresh(); }
 
   useEffect(()=>{ refresh(); const id=setInterval(refresh,1500); return()=>clearInterval(id);},[]);
-  if (!sec) return <p>Cargando seguridad...</p>;
+
+  if (!sec) return (
+    <div className="card">
+      <div className="loading">Cargando seguridad</div>
+    </div>
+  );
 
   return (
-    <div style={{ border: "1px solid #f00", padding: "15px", borderRadius: "8px" }}>
-      <h2>Seguridad</h2>
-      <p><strong>Fallos:</strong> {sec.fail_count}</p>
-      <p><strong>Modo seguro:</strong> {sec.safe_mode ? "Sí" : "No"}</p>
-      <p><strong>Último error:</strong> {sec.last_error || "-"}</p>
-      <button onClick={clearSafe}>Reiniciar seguridad</button>
+    <div className="card">
+      <div className="card-header">
+        <div className="card-icon">🛡️</div>
+        <h2 className="card-title">Seguridad</h2>
+      </div>
+
+      {sec.safe_mode && (
+        <div className="security-alert">
+          ⚠️ Modo Seguro Activado
+        </div>
+      )}
+
+      <div className="security-stats">
+        <div className="security-stat">
+          <span className="security-stat-label">Errores detectados</span>
+          <span className="security-stat-value">{sec.fail_count}</span>
+        </div>
+        <div className="security-stat">
+          <span className="security-stat-label">Modo seguro</span>
+          <span className="security-stat-value">
+            {sec.safe_mode ? "🔒 Activado" : "🔓 Desactivado"}
+          </span>
+        </div>
+        <div className="security-stat">
+          <span className="security-stat-label">Último error</span>
+          <span className="security-stat-value">{sec.last_error || "Ninguno"}</span>
+        </div>
+        {sec.last_ip && (
+          <div className="security-stat">
+            <span className="security-stat-label">IP origen</span>
+            <span className="security-stat-value">{sec.last_ip}</span>
+          </div>
+        )}
+      </div>
+
+      <button className="btn-reset" onClick={clearSafe}>
+        Reiniciar Sistema
+      </button>
     </div>
   );
 }

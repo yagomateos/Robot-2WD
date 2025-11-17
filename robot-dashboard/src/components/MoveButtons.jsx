@@ -1,18 +1,25 @@
 import { move } from "../hooks/useRobotApi";
 
-const btn = { padding: "12px 20px", margin: "8px", fontSize: "16px", cursor: "pointer" };
-
 export default function MoveButtons() {
   return (
-    <div>
-      <h2>Movimiento</h2>
-      <div><button style={btn} onClick={() => move("F")}>Adelante</button></div>
-      <div>
-        <button style={btn} onClick={() => move("L")}>Izquierda</button>
-        <button style={btn} onClick={() => move("S")}>Parar</button>
-        <button style={btn} onClick={() => move("R")}>Derecha</button>
+    <div className="card">
+      <div className="card-header">
+        <div className="card-icon">🎮</div>
+        <h2 className="card-title">Control</h2>
       </div>
-      <div><button style={btn} onClick={() => move("B")}>Atrás</button></div>
+      <div className="move-container">
+        <div className="move-row">
+          <button className="move-btn forward" onClick={() => move("F")}>↑</button>
+        </div>
+        <div className="move-row">
+          <button className="move-btn left" onClick={() => move("L")}>←</button>
+          <button className="move-btn stop" onClick={() => move("S")}>■</button>
+          <button className="move-btn right" onClick={() => move("R")}>→</button>
+        </div>
+        <div className="move-row">
+          <button className="move-btn backward" onClick={() => move("B")}>↓</button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import LogsPanel from "./LogsPanel";
 
 export default function Dashboard() {
   return (
-    <div style={{ display: "grid", gap: "20px", gridTemplateColumns: "1fr 1fr" }}>
+    <div className="dashboard-grid">
       <TelemetryCard />
       <MoveButtons />
       <SecurityPanel />
