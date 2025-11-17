@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { apiGet } from "../hooks/useRobotApi";
 
-export default function LogsPanel() {
+export default function LogsPanel({ robotIP }) {
   const [logs, setLogs] = useState([]);
+
   const load = async () => {
+    if (!robotIP) return;
+
     const d = await apiGet("/logs");
     if (d && d.logs) setLogs(d.logs);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     load();
-    const id = setInterval(load, 1500);
-    return () => clearInterval(id);
-  }, []);
+    const interval = setInterval(load, 1000); // refresco实时
+    return () => clearInterval(interval);
+  }, [robotIP]);
 
   return (
     <div className="card">
@@ -20,6 +23,7 @@ export default function LogsPanel() {
         <div className="card-icon">📝</div>
         <h2 className="card-title">Registros</h2>
       </div>
+
       <div className="logs-container">
         {logs.length === 0 ? (
           <div className="empty-logs">No hay registros aún...</div>
@@ -28,7 +32,9 @@ export default function LogsPanel() {
             {logs.map((log, i) => (
               <li
                 key={i}
-                className={`log-item ${log.includes('ERROR') ? 'error' : ''}`}
+                className={`log-item ${
+                  log.includes("ERROR") ? "error" : ""
+                }`}
               >
                 {log}
               </li>

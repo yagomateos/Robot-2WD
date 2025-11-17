@@ -1,7 +1,25 @@
+import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
 import "./styles.css";
 
 export default function App() {
+  const [robotIP, setRobotIP] = useState(null);
+
+  // Obtener IP del robot desde /status
+  const loadRobotIP = async () => {
+    try {
+      const res = await fetch("http://10.184.61.174/status");
+      const data = await res.json();
+      if (data.ip) setRobotIP(data.ip);
+    } catch (e) {
+      console.log("No se pudo obtener la IP del robot");
+    }
+  };
+
+  useEffect(() => {
+    loadRobotIP();
+  }, []);
+
   return (
     <div className="app-container">
       <header className="app-header">
@@ -9,7 +27,9 @@ export default function App() {
         <p className="app-subtitle">Control Dashboard</p>
         <span className="status-badge">● Conectado</span>
       </header>
-      <Dashboard />
+
+      {/* Pasamos la IP al Dashboard */}
+      <Dashboard robotIP={robotIP} />
     </div>
   );
 }
