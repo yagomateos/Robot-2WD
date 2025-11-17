@@ -535,42 +535,467 @@ body {
    RESPONSIVE
    =================================== */
 
-@media (max-width: 768px) {
+/* Tablets grandes y laptops pequeñas */
+@media (max-width: 1200px) {
+  .app-container {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .dashboard-grid {
+    gap: 20px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
   .app-container {
     padding: 16px;
   }
 
   .app-title {
+    font-size: 2.5rem;
+  }
+
+  .app-subtitle {
+    font-size: 1rem;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+  }
+
+  .card-icon {
+    font-size: 1.8rem;
+    width: 45px;
+    height: 45px;
+  }
+
+  .metric-value {
+    font-size: 1.6rem;
+  }
+
+  .move-btn {
+    width: 75px;
+    height: 75px;
+    font-size: 1.6rem;
+  }
+}
+
+/* Móviles horizontal y tablets pequeñas */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 12px;
+  }
+
+  .app-header {
+    margin-bottom: 24px;
+  }
+
+  .app-title {
     font-size: 2rem;
+    letter-spacing: -0.5px;
+  }
+
+  .app-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .status-badge {
+    font-size: 0.8rem;
+    padding: 5px 14px;
   }
 
   .dashboard-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
+  .card {
+    padding: 18px;
+  }
+
+  .card-header {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
+
+  .card-icon {
+    font-size: 1.6rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Telemetría en 2 columnas en tablet */
   .telemetry-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
+  .metric {
+    padding: 14px;
+  }
+
+  .metric-label {
+    font-size: 0.8rem;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+  }
+
+  .metric-unit {
+    font-size: 0.9rem;
+  }
+
+  .metric-badge {
+    font-size: 0.85rem;
+    padding: 4px 10px;
+  }
+
+  /* Botones de movimiento adaptados */
   .move-btn {
     width: 70px;
     height: 70px;
     font-size: 1.5rem;
   }
+
+  .move-row {
+    gap: 10px;
+  }
+
+  .move-container {
+    gap: 10px;
+  }
+
+  /* Logs más compactos */
+  .logs-container {
+    max-height: 300px;
+    padding: 12px;
+  }
+
+  .log-item {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Seguridad */
+  .security-stat {
+    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .security-stat-label {
+    font-size: 0.85rem;
+  }
+
+  .security-stat-value {
+    font-size: 0.95rem;
+  }
+
+  .btn-reset {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
 }
 
-@media (max-width: 480px) {
+/* Móviles vertical */
+@media (max-width: 576px) {
+  .app-container {
+    padding: 10px;
+  }
+
+  .app-header {
+    margin-bottom: 20px;
+  }
+
   .app-title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+  }
+
+  .app-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .dashboard-grid {
+    gap: 14px;
   }
 
   .card {
     padding: 16px;
   }
 
+  .card-header {
+    gap: 10px;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+  }
+
+  .card-icon {
+    font-size: 1.4rem;
+    width: 38px;
+    height: 38px;
+  }
+
+  /* Telemetría en 1 columna en móvil */
+  .telemetry-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .metric {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .metric-label {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+  }
+
+  .metric-value {
+    font-size: 1.4rem;
+  }
+
+  .metric-badge {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+  }
+
+  /* Botones más pequeños en móvil */
   .move-btn {
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
+    font-size: 1.4rem;
+  }
+
+  .move-row {
+    gap: 8px;
+  }
+
+  /* Logs */
+  .logs-container {
+    max-height: 250px;
+    padding: 10px;
+  }
+
+  .log-item {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  .empty-logs {
+    padding: 30px;
+    font-size: 0.9rem;
+  }
+
+  /* Seguridad */
+  .security-alert {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .security-stats {
+    gap: 10px;
+  }
+
+  .security-stat {
+    padding: 8px;
+  }
+
+  .btn-reset {
+    padding: 11px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 380px) {
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .app-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .status-badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+  }
+
+  .card-icon {
+    font-size: 1.3rem;
+    width: 35px;
+    height: 35px;
+  }
+
+  .metric {
+    padding: 10px;
+  }
+
+  .metric-value {
+    font-size: 1.3rem;
+  }
+
+  .move-btn {
+    width: 55px;
+    height: 55px;
     font-size: 1.2rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .move-btn.stop {
+    font-size: 1rem;
+  }
+
+  .move-row {
+    gap: 6px;
+  }
+
+  .logs-container {
+    max-height: 200px;
+  }
+
+  .log-item {
+    font-size: 0.75rem;
+    padding: 6px 8px;
+  }
+
+  .btn-reset {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Pantallas muy grandes */
+@media (min-width: 1400px) {
+  .app-container {
+    max-width: 1600px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+}
+
+/* Orientación horizontal en móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+  .app-header {
+    margin-bottom: 16px;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .app-subtitle {
+    display: none;
+  }
+
+  .status-badge {
+    margin-top: 6px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .card-header {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+  }
+
+  .logs-container {
+    max-height: 180px;
+  }
+
+  .move-btn {
+    width: 55px;
+    height: 55px;
+    font-size: 1.2rem;
+  }
+
+  .telemetry-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .metric {
+    padding: 8px;
+  }
+
+  .metric-value {
+    font-size: 1.2rem;
+  }
+}
+
+/* Touch devices - Aumentar área de toque */
+@media (hover: none) and (pointer: coarse) {
+  .move-btn {
+    min-width: 60px;
+    min-height: 60px;
+  }
+
+  .btn-reset {
+    min-height: 44px;
+  }
+
+  /* Mejorar scrolling en móviles */
+  .logs-container {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Reducir animaciones para dispositivos de bajo rendimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Tema claro para modo alto contraste */
+@media (prefers-contrast: high) {
+  :root {
+    --bg-dark: #000000;
+    --bg-card: #1a1a1a;
+    --text: #ffffff;
+    --border: #ffffff;
+  }
+
+  .card {
+    border-width: 2px;
   }
 }
