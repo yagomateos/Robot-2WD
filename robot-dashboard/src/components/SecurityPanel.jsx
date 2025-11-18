@@ -1,17 +1,48 @@
 import { useEffect, useState } from "react";
 import { apiGet, restartESP32 } from "../hooks/useRobotApi";
 
-export default function SecurityPanel() {
+export default function SecurityPanel({ isRestarting, setIsRestarting }) {
   const [sec, setSec] = useState(null);
-  async function refresh(){ setSec(await apiGet("/security")); }
-  async function clearSafe(){ await apiGet("/clear"); refresh(); }
-  async function handleRestart(){
-    if (confirm("¿Estás seguro de que quieres reiniciar el ESP32?")) {
-      await restartESP32();
+
+  async function refresh(){
+    if (!isRestarting) {
+      setSec(await apiGet("/security"));
     }
   }
 
-  useEffect(()=>{ refresh(); const id=setInterval(refresh,1500); return()=>clearInterval(id);},[]);
+  async function clearSafe(){ await apiGet("/clear"); refresh(); }
+
+  async function handleRestart(){
+    if (confirm("¿Estás seguro de que quieres reiniciar el ESP32?")) {
+      setIsRestarting(true);
+      await restartESP32();
+      // Esperar 5 segundos antes de volver a intentar conectar
+      setTimeout(() => {
+        setIsRestarting(false);
+      }, 5000);
+    }
+  }
+
+  useEffect(()=>{
+    if (!isRestarting) {
+      refresh();
+      const id=setInterval(refresh,1500);
+      return()=>clearInterval(id);
+    }
+  },[isRestarting]);
+
+  if (isRestarting) return (
+    <div className="card">
+      <div className="card-header">
+        <div className="card-icon">🛡️</div>
+        <h2 className="card-title">Seguridad</h2>
+      </div>
+      <div className="security-alert" style={{background: '#f59e0b'}}>
+        🔄 Reiniciando ESP32...
+      </div>
+      <div className="loading">Esperando reconexión...</div>
+    </div>
+  );
 
   if (!sec) return (
     <div className="card">

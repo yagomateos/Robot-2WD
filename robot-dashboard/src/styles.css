@@ -103,6 +103,11 @@ body {
   animation: blink 1s infinite;
 }
 
+.status-badge.restarting {
+  background: var(--warning);
+  animation: pulse 1s infinite;
+}
+
 /* ===================================
    DASHBOARD GRID
    =================================== */

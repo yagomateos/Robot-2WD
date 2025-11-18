@@ -1,7 +1,27 @@
-import useTelemetry from "../hooks/useTelemetry";
+import { useEffect, useState } from "react";
+import { apiGet } from "../hooks/useRobotApi";
 
-export default function TelemetryCard() {
-  const t = useTelemetry();
+export default function TelemetryCard({ isRestarting }) {
+  const [t, setT] = useState(null);
+
+  useEffect(() => {
+    if (!isRestarting) {
+      const f = async () => setT(await apiGet("/telemetry"));
+      f();
+      const id = setInterval(f, 800);
+      return () => clearInterval(id);
+    }
+  }, [isRestarting]);
+
+  if (isRestarting) return (
+    <div className="card">
+      <div className="card-header">
+        <div className="card-icon">📊</div>
+        <h2 className="card-title">Telemetría</h2>
+      </div>
+      <div className="loading">Esperando reconexión...</div>
+    </div>
+  );
 
   if (!t) return (
     <div className="card">

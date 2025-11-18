@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import { apiGet } from "../hooks/useRobotApi";
 
-export default function LogsPanel({ robotIP }) {
+export default function LogsPanel({ robotIP, isRestarting }) {
   const [logs, setLogs] = useState([]);
 
   const load = async () => {
-    if (!robotIP) return;
+    if (!robotIP || isRestarting) return;
 
     const d = await apiGet("/logs");
     if (d && d.logs) setLogs(d.logs);
   };
 
   useEffect(() => {
-    load();
-    const interval = setInterval(load, 1000); // refresco实时
-    return () => clearInterval(interval);
-  }, [robotIP]);
+    if (!isRestarting) {
+      load();
+      const interval = setInterval(load, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [robotIP, isRestarting]);
 
   return (
     <div className="card">
@@ -25,7 +27,9 @@ export default function LogsPanel({ robotIP }) {
       </div>
 
       <div className="logs-container">
-        {logs.length === 0 ? (
+        {isRestarting ? (
+          <div className="empty-logs">Esperando reconexión...</div>
+        ) : logs.length === 0 ? (
           <div className="empty-logs">No hay registros aún...</div>
         ) : (
           <ul className="logs-list">

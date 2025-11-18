@@ -3,7 +3,7 @@ import TelemetryCard from "./TelemetryCard";
 import SecurityPanel from "./SecurityPanel";
 import LogsPanel from "./LogsPanel";
 
-export default function Dashboard({ robotIP }) {
+export default function Dashboard({ robotIP, isRestarting, setIsRestarting }) {
   if (!robotIP) {
     return (
       <div className="dashboard-grid">
@@ -17,11 +17,11 @@ export default function Dashboard({ robotIP }) {
 
   return (
     <div className="dashboard-grid">
-      {/* Pasamos la IP a todos los componentes */}
-      <TelemetryCard robotIP={robotIP} />
-      <MoveButtons robotIP={robotIP} />
-      <SecurityPanel robotIP={robotIP} />
-      <LogsPanel robotIP={robotIP} />
+      {/* Pasamos la IP y el estado de reinicio a todos los componentes */}
+      <TelemetryCard robotIP={robotIP} isRestarting={isRestarting} />
+      <MoveButtons robotIP={robotIP} isRestarting={isRestarting} />
+      <SecurityPanel robotIP={robotIP} isRestarting={isRestarting} setIsRestarting={setIsRestarting} />
+      <LogsPanel robotIP={robotIP} isRestarting={isRestarting} />
     </div>
   );
 }

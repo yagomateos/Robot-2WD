@@ -10,6 +10,7 @@ Configuración centralizada del robot ESP32
 MOTOR_LEFT_PIN1 = 26
 MOTOR_LEFT_PIN2 = 27
 
+
 # Pines del motor derecho (L298N IN3, IN4)
 MOTOR_RIGHT_PIN1 = 14
 MOTOR_RIGHT_PIN2 = 12
