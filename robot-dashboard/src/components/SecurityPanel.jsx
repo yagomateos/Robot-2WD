@@ -11,7 +11,7 @@ function SecurityPanel({ isRestarting, setIsRestarting }) {
     }
   }
 
-  async function clearSafe(){ await apiGet("/clear"); refresh(); }
+  async function clearSafe(){ await apiGet("/clear", true); refresh(); } // Requiere autenticación
 
   async function handleRestart(){
     if (confirm("¿Estás seguro de que quieres reiniciar el ESP32?")) {
@@ -87,9 +87,16 @@ function SecurityPanel({ isRestarting, setIsRestarting }) {
         )}
       </div>
 
-      <button className="btn-reset" onClick={handleRestart}>
-        Reiniciar ESP32
-      </button>
+      <div style={{display: 'flex', gap: '10px', flexDirection: 'column'}}>
+        {sec.safe_mode && (
+          <button className="btn-reset" onClick={clearSafe} style={{background: '#10b981'}}>
+            Desactivar Modo Seguro
+          </button>
+        )}
+        <button className="btn-reset" onClick={handleRestart}>
+          Reiniciar ESP32
+        </button>
+      </div>
     </div>
   );
 }

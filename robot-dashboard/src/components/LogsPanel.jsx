@@ -8,7 +8,7 @@ function LogsPanel({ robotIP, isRestarting }) {
   const load = async () => {
     if (!robotIP || isRestarting) return;
 
-    const d = await apiGet("/logs");
+    const d = await apiGet("/logs", true); // Requiere autenticación
     if (d && d.logs) setLogs(d.logs);
   };
 
