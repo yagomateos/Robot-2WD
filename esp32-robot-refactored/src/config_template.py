@@ -48,6 +48,14 @@ MAX_ERRORS_BEFORE_SAFE_MODE = 5
 # Tamaño máximo del buffer de logs
 MAX_LOG_ENTRIES = 50
 
+# Rate limiting (requests por IP)
+RATE_LIMIT_REQUESTS = 10  # Máximo de requests
+RATE_LIMIT_WINDOW_MS = 1000  # Ventana de tiempo en milisegundos
+
+# Token de seguridad para operaciones críticas (restart, clear)
+# IMPORTANTE: Cambiar este token por uno único
+SECURITY_TOKEN = "CAMBIAR_POR_TOKEN_SEGURO"
+
 # ===========================
 # CONFIGURACIÓN MODO AUTOMÁTICO
 # ===========================

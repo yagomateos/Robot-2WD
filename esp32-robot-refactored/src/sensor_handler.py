@@ -53,11 +53,16 @@ class UltrasonicSensor:
         Mide la distancia en centímetros
 
         Returns:
-            float: Distancia en cm (2-400), o -1 si hay error/fuera de rango
+            float: Distancia en cm (2-400), o valor negativo si hay error:
+                -1.0: Timeout o fuera de rango (2-400 cm)
+                -2.0: Error de I/O en hardware (pines)
+                -3.0: Pines no inicializados correctamente
 
         Note:
             El HC-SR04 tiene un rango efectivo de 2-400 cm.
             Valores fuera de este rango se consideran errores de medición.
+            Diferentes códigos de error negativos permiten diagnosticar
+            el tipo de fallo (timeout vs. hardware vs. configuración).
         """
         try:
             # Preparar el pulso
@@ -95,10 +100,16 @@ class UltrasonicSensor:
 
             return distance
 
-        except Exception as e:
-            # Capturar cualquier error inesperado
-            # No romper el programa, solo retornar error
+        except OSError as e:
+            # Error de I/O en los pines (hardware)
+            # Retornar -2.0 para distinguir de timeout
+            return -2.0
+        except ValueError as e:
+            # Error en cálculos o valores inválidos
             return -1.0
+        except AttributeError as e:
+            # Pines no inicializados correctamente
+            return -3.0
     
     def is_obstacle_detected(self, threshold_cm=None):
         """
