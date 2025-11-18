@@ -17,10 +17,11 @@ function SecurityPanel({ isRestarting, setIsRestarting }) {
     if (confirm("¿Estás seguro de que quieres reiniciar el ESP32?")) {
       setIsRestarting(true);
       await restartESP32();
-      // Esperar 5 segundos antes de volver a intentar conectar
+      // Esperar 20 segundos antes de volver a intentar conectar
+      // (ESP32 tarda ~15-20s en arrancar WiFi + servidor HTTP)
       setTimeout(() => {
         setIsRestarting(false);
-      }, 5000);
+      }, 20000);
     }
   }
 
