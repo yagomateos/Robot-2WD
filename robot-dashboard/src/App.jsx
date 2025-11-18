@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
+import { API_URL } from "./hooks/useRobotApi";
 import "./styles.css";
 
 export default function App() {
@@ -10,11 +11,13 @@ export default function App() {
   // Obtener IP del robot desde /status
   const loadRobotIP = async () => {
     try {
-      const res = await fetch("http://10.184.61.174/status");
+      const res = await fetch(`${API_URL}/status`);
       const data = await res.json();
       if (data.ip) setRobotIP(data.ip);
     } catch (e) {
-      console.log("No se pudo obtener la IP del robot");
+      if (import.meta.env.DEV) {
+        console.log("No se pudo obtener la IP del robot");
+      }
     }
   };
 
@@ -23,7 +26,7 @@ export default function App() {
     if (!isRestarting) {
       const checkStatus = async () => {
         try {
-          const res = await fetch("http://10.184.61.174/status");
+          const res = await fetch(`${API_URL}/status`);
           const data = await res.json();
           setStatusData(data);
         } catch (e) {

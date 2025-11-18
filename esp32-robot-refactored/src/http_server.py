@@ -81,44 +81,64 @@ class HTTPServer:
     def _handle_request(self, client, remote):
         """
         Maneja una petición HTTP
-        
+
         Args:
             client: Socket del cliente
             remote: Información del cliente remoto
         """
         try:
-            # Recibir datos
-            request = client.recv(1024)
+            # Recibir datos (máximo 1024 bytes)
+            MAX_REQUEST_SIZE = 1024
+            request = client.recv(MAX_REQUEST_SIZE)
             if not request:
-                client.close()
                 return
-            
+
             # Decodificar
             try:
-                text = request.decode()
-            except:
-                client.close()
+                text = request.decode('utf-8')
+            except UnicodeDecodeError as e:
+                self.logger.add("ERROR: Request no válido (encoding)")
+                self._send_json(client, '{"error":"invalid encoding"}', "400 Bad Request")
                 return
-            
+
             # Parsear primera línea
             lines = text.split("\r\n")
+            if not lines:
+                return
+
             request_line = lines[0]
-            
+
             # Manejar preflight CORS (OPTIONS)
             if request_line.startswith("OPTIONS"):
                 self._send_text(client, "ok", "200 OK")
-                client.close()
                 return
-            
+
             # Parsear path
             path = self._parse_path(request_line)
+
+            # Validar longitud de path
+            if len(path) > 256:
+                self.logger.add("ERROR: Path demasiado largo")
+                self._send_json(client, '{"error":"path too long"}', "400 Bad Request")
+                return
+
             client_ip = remote[0]
-            
+
             # Rutear la petición
             self._route_request(client, path, client_ip)
-        
+
+        except Exception as e:
+            self.logger.add("ERROR crítico en _handle_request: " + str(e))
+            try:
+                self._send_json(client, '{"error":"server error"}', "500 Internal Server Error")
+            except:
+                pass
+
         finally:
-            client.close()
+            try:
+                client.close()
+            except:
+                pass
     
     def _route_request(self, client, path, client_ip):
         """
@@ -275,17 +295,20 @@ class HTTPServer:
     def _parse_path(self, request_line):
         """
         Parsea el path de la request line
-        
+
         Args:
             request_line (str): Primera línea de la petición HTTP
-        
+
         Returns:
             str: Path de la petición
         """
         try:
             parts = request_line.split(" ")
-            return parts[1]
-        except:
+            if len(parts) >= 2:
+                return parts[1]
+            return "/"
+        except (IndexError, AttributeError) as e:
+            self.logger.add("ERROR: Request line inválido")
             return "/"
     
     def _get_query_param(self, path, key):

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import { apiGet } from "../hooks/useRobotApi";
 
-export default function LogsPanel({ robotIP, isRestarting }) {
+function LogsPanel({ robotIP, isRestarting }) {
   const [logs, setLogs] = useState([]);
 
   const load = async () => {
@@ -49,3 +50,10 @@ export default function LogsPanel({ robotIP, isRestarting }) {
     </div>
   );
 }
+
+LogsPanel.propTypes = {
+  robotIP: PropTypes.string,
+  isRestarting: PropTypes.bool.isRequired
+};
+
+export default LogsPanel;

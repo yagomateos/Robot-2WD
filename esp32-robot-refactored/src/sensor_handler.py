@@ -17,31 +17,54 @@ class UltrasonicSensor:
     def measure_distance_cm(self):
         """
         Mide la distancia en centímetros
-        
+
         Returns:
-            float: Distancia en cm, o -1 si hay error
+            float: Distancia en cm (2-400), o -1 si hay error/fuera de rango
+
+        Note:
+            El HC-SR04 tiene un rango efectivo de 2-400 cm.
+            Valores fuera de este rango se consideran errores de medición.
         """
-        # Preparar el pulso
-        self.trig.value(0)
-        time.sleep_us(2)
-        
-        # Enviar pulso de 10µs
-        self.trig.value(1)
-        time.sleep_us(10)
-        self.trig.value(0)
-        
-        # Medir duración del pulso de retorno
-        duration = time_pulse_us(self.echo, 1, config.ULTRASONIC_TIMEOUT)
-        
-        if duration < 0:
+        try:
+            # Preparar el pulso
+            self.trig.value(0)
+            time.sleep_us(2)
+
+            # Enviar pulso de 10µs
+            self.trig.value(1)
+            time.sleep_us(10)
+            self.trig.value(0)
+
+            # Medir duración del pulso de retorno
+            duration = time_pulse_us(self.echo, 1, config.ULTRASONIC_TIMEOUT)
+
+            # Validar que no hubo timeout
+            if duration < 0:
+                return -1.0
+
+            # Validar que no excede el timeout configurado
+            if duration > config.ULTRASONIC_TIMEOUT:
+                return -1.0
+
+            # Calcular distancia: (duración / 2) / 29.1
+            # Velocidad del sonido: 343 m/s = 0.0343 cm/µs = 29.1 µs/cm
+            # Ida y vuelta: dividir por 2
+            SOUND_SPEED_FACTOR = 29.1
+            distance = (duration / 2.0) / SOUND_SPEED_FACTOR
+
+            # Validar rango del sensor HC-SR04 (2-400 cm)
+            MIN_DISTANCE = 2.0
+            MAX_DISTANCE = 400.0
+
+            if distance < MIN_DISTANCE or distance > MAX_DISTANCE:
+                return -1.0
+
+            return distance
+
+        except Exception as e:
+            # Capturar cualquier error inesperado
+            # No romper el programa, solo retornar error
             return -1.0
-        
-        # Calcular distancia: (duración / 2) / 29.1
-        # Velocidad del sonido: 343 m/s = 0.0343 cm/µs
-        # Ida y vuelta: dividir por 2
-        distance = (duration / 2.0) / 29.1
-        
-        return distance
     
     def is_obstacle_detected(self, threshold_cm=None):
         """

@@ -135,6 +135,27 @@ main()
 
 ## 🚀 Instalación
 
+### 0. Configurar credenciales WiFi (IMPORTANTE)
+
+**⚠️ Antes de subir archivos al ESP32:**
+
+1. Copiar el archivo de plantilla:
+```bash
+cd esp32-robot-refactored/src/
+cp config_template.py config.py
+```
+
+2. Editar `config.py` y actualizar tus credenciales WiFi:
+```python
+WIFI_SSID = "TU_WIFI_SSID"        # Reemplazar con tu red WiFi
+WIFI_PASSWORD = "TU_CONTRASEÑA"   # Reemplazar con tu contraseña
+```
+
+**🔒 Seguridad:**
+- `config.py` está en `.gitignore` y NO se subirá al repositorio
+- Solo `config_template.py` (sin credenciales) está versionado
+- Nunca compartas tu archivo `config.py` con credenciales reales
+
 ### 1. Subir archivos al ESP32
 
 Usando **Thonny IDE**:

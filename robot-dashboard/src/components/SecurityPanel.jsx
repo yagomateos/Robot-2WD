@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import { apiGet, restartESP32 } from "../hooks/useRobotApi";
 
-export default function SecurityPanel({ isRestarting, setIsRestarting }) {
+function SecurityPanel({ isRestarting, setIsRestarting }) {
   const [sec, setSec] = useState(null);
 
   async function refresh(){
@@ -92,3 +93,10 @@ export default function SecurityPanel({ isRestarting, setIsRestarting }) {
     </div>
   );
 }
+
+SecurityPanel.propTypes = {
+  isRestarting: PropTypes.bool.isRequired,
+  setIsRestarting: PropTypes.func.isRequired
+};
+
+export default SecurityPanel;

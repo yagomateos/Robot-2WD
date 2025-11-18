@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import { apiGet } from "../hooks/useRobotApi";
 
-export default function TelemetryCard({ isRestarting }) {
+function TelemetryCard({ isRestarting }) {
   const [t, setT] = useState(null);
 
   useEffect(() => {
@@ -70,3 +71,9 @@ export default function TelemetryCard({ isRestarting }) {
     </div>
   );
 }
+
+TelemetryCard.propTypes = {
+  isRestarting: PropTypes.bool.isRequired
+};
+
+export default TelemetryCard;

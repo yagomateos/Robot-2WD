@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import MoveButtons from "./MoveButtons";
 import TelemetryCard from "./TelemetryCard";
 import SecurityPanel from "./SecurityPanel";
 import LogsPanel from "./LogsPanel";
 
-export default function Dashboard({ robotIP, isRestarting, setIsRestarting }) {
+function Dashboard({ robotIP, isRestarting, setIsRestarting }) {
   if (!robotIP) {
     return (
       <div className="dashboard-grid">
@@ -25,3 +26,11 @@ export default function Dashboard({ robotIP, isRestarting, setIsRestarting }) {
     </div>
   );
 }
+
+Dashboard.propTypes = {
+  robotIP: PropTypes.string,
+  isRestarting: PropTypes.bool.isRequired,
+  setIsRestarting: PropTypes.func.isRequired
+};
+
+export default Dashboard;
