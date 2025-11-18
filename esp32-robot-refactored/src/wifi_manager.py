@@ -34,15 +34,21 @@ class WiFiManager:
         # Activar modo Station (cliente)
         self.sta = network.WLAN(network.STA_IF)
         self.sta.active(True)
-        
+
+        # Configurar IP estática si está definida
+        if hasattr(config, 'WIFI_STATIC_IP') and config.WIFI_STATIC_IP:
+            self.sta.ifconfig(config.WIFI_STATIC_IP)
+            print("📌 IP estática configurada:", config.WIFI_STATIC_IP[0])
+
         self.logger.add("Conectando a WiFi: {}".format(config.WIFI_SSID))
         print("\n" + "="*50)
         print("🌐 CONECTANDO A WIFI")
         print("="*50)
         print("SSID:", config.WIFI_SSID)
+        print("Modo IP:", "ESTÁTICA" if hasattr(config, 'WIFI_STATIC_IP') and config.WIFI_STATIC_IP else "DHCP")
         print("Intentos máximos:", config.WIFI_CONNECT_ATTEMPTS)
         print("")
-        
+
         # Intentar conexión
         self.sta.connect(config.WIFI_SSID, config.WIFI_PASSWORD)
         

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
-import { apiGet, restartESP32 } from "../hooks/useRobotApi";
+import { apiGet, restartESP32, API_URL } from "../hooks/useRobotApi";
 
 function SecurityPanel({ isRestarting, setIsRestarting }) {
   const [sec, setSec] = useState(null);
@@ -17,11 +17,39 @@ function SecurityPanel({ isRestarting, setIsRestarting }) {
     if (confirm("¿Estás seguro de que quieres reiniciar el ESP32?")) {
       setIsRestarting(true);
       await restartESP32();
-      // Esperar 20 segundos antes de volver a intentar conectar
-      // (ESP32 tarda ~15-20s en arrancar WiFi + servidor HTTP)
-      setTimeout(() => {
-        setIsRestarting(false);
-      }, 20000);
+
+      // Polling inteligente: intentar reconectar cada 2s
+      let attempts = 0;
+      const maxAttempts = 15; // 15 intentos = 30 segundos máximo
+
+      const checkConnection = async () => {
+        attempts++;
+
+        try {
+          const response = await fetch(API_URL + "/status");
+          if (response.ok) {
+            // ESP32 respondió, reconectado exitosamente
+            console.log(`ESP32 reconectado después de ${attempts * 2}s`);
+            setIsRestarting(false);
+            refresh();
+            return;
+          }
+        } catch (e) {
+          // Todavía no responde
+        }
+
+        // Si no ha respondido y no hemos alcanzado el límite, reintentar
+        if (attempts < maxAttempts) {
+          setTimeout(checkConnection, 2000);
+        } else {
+          // Timeout alcanzado, dejar de intentar
+          console.log("Timeout: ESP32 no respondió después de 30s");
+          setIsRestarting(false);
+        }
+      };
+
+      // Esperar 5s antes del primer intento (tiempo mínimo de arranque)
+      setTimeout(checkConnection, 5000);
     }
   }
 
