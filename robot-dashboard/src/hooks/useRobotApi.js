@@ -11,3 +11,4 @@ export async function apiGet(path) {
 
 export async function move(dir) { return apiGet("/move?dir=" + dir); }
 export async function toggleAuto(flag) { return apiGet("/auto?enabled=" + flag); }
+export async function restartESP32() { return apiGet("/restart"); }

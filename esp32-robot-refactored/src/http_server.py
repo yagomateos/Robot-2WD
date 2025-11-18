@@ -52,6 +52,7 @@ class HTTPServer:
         print("  GET  /logs          - Historial de logs")
         print("  GET  /security      - Estado de seguridad")
         print("  GET  /clear         - Reset de Safe Mode")
+        print("  GET  /restart       - Reiniciar ESP32")
         print("="*50)
         print("")
         
@@ -151,7 +152,10 @@ class HTTPServer:
         
         elif path.startswith("/clear"):
             self._handle_clear(client)
-        
+
+        elif path.startswith("/restart"):
+            self._handle_restart(client)
+
         else:
             self._handle_not_found(client, path, client_ip)
     
@@ -250,7 +254,15 @@ class HTTPServer:
         """Handler para /clear"""
         self.security.deactivate_safe_mode()
         self._send_json(client, '{"ok":true}')
-    
+
+    def _handle_restart(self, client):
+        """Handler para /restart"""
+        import machine
+        self.logger.add("⚠️ Reiniciando ESP32...")
+        self._send_json(client, '{"ok":true,"message":"restarting"}')
+        self.motors.stop()
+        machine.reset()
+
     def _handle_not_found(self, client, path, client_ip):
         """Handler para rutas no encontradas"""
         self.security.add_error(client_ip, "route_not_found:" + path)

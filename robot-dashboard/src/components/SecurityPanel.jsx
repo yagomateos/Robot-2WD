@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
-import { apiGet } from "../hooks/useRobotApi";
+import { apiGet, restartESP32 } from "../hooks/useRobotApi";
 
 export default function SecurityPanel() {
   const [sec, setSec] = useState(null);
   async function refresh(){ setSec(await apiGet("/security")); }
   async function clearSafe(){ await apiGet("/clear"); refresh(); }
+  async function handleRestart(){
+    if (confirm("¿Estás seguro de que quieres reiniciar el ESP32?")) {
+      await restartESP32();
+    }
+  }
 
   useEffect(()=>{ refresh(); const id=setInterval(refresh,1500); return()=>clearInterval(id);},[]);
 
@@ -50,8 +55,8 @@ export default function SecurityPanel() {
         )}
       </div>
 
-      <button className="btn-reset" onClick={clearSafe}>
-        Reiniciar Sistema
+      <button className="btn-reset" onClick={handleRestart}>
+        Reiniciar ESP32
       </button>
     </div>
   );
