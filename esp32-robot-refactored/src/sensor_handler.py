@@ -1,5 +1,14 @@
-"""
-Handler para sensor ultrasónico HC-SR04
+"""Handler para sensor ultrasónico HC-SR04.
+
+Este módulo proporciona una interfaz para interactuar con el sensor
+ultrasónico HC-SR04, permitiendo mediciones de distancia y detección
+de obstáculos para navegación autónoma del robot.
+
+Example:
+    >>> sensor = UltrasonicSensor()
+    >>> distance = sensor.measure_distance_cm()
+    >>> if sensor.is_obstacle_detected(threshold_cm=15):
+    ...     print("Obstáculo detectado")
 """
 from machine import Pin, time_pulse_us
 import time
@@ -7,10 +16,35 @@ import config
 
 
 class UltrasonicSensor:
-    """Sensor ultrasónico HC-SR04 para medición de distancia"""
+    """Sensor ultrasónico HC-SR04 para medición de distancia.
+
+    Interfaz para el sensor HC-SR04 que utiliza pulsos ultrasónicos
+    para medir distancias entre 2 y 400 cm. El sensor envía un pulso
+    de trigger y mide el tiempo de retorno del echo.
+
+    Attributes:
+        trig (Pin): Pin de salida para trigger del sensor
+        echo (Pin): Pin de entrada para echo del sensor
+
+    Note:
+        Los pines se configuran desde config.ULTRASONIC_TRIG y
+        config.ULTRASONIC_ECHO respectivamente.
+    """
     
     def __init__(self):
-        """Inicializa los pines del sensor ultrasónico"""
+        """Inicializa los pines del sensor ultrasónico.
+
+        Configura el pin trigger como salida y el pin echo como entrada
+        usando los valores definidos en el módulo config.
+
+        Raises:
+            ValueError: Si los pines no son válidos para la placa
+            OSError: Si hay un error al configurar los pines GPIO
+
+        Note:
+            Los números de pin se obtienen de config.ULTRASONIC_TRIG
+            y config.ULTRASONIC_ECHO.
+        """
         self.trig = Pin(config.ULTRASONIC_TRIG, Pin.OUT)
         self.echo = Pin(config.ULTRASONIC_ECHO, Pin.IN)
     
