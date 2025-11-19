@@ -39,7 +39,7 @@ Proyecto de robótica IoT que combina hardware (ESP32 + robot 2WD) con software 
 
 ## Componentes del Proyecto
 
-### 🔧 ESP32 Robot (`/esp32-robot`)
+### 🔧 ESP32 Robot (`/esp32-robot-refactored`)
 
 Backend del robot implementado en MicroPython con servidor HTTP embebido.
 
@@ -59,7 +59,7 @@ Backend del robot implementado en MicroPython con servidor HTTP embebido.
 - 2 motores DC con reductora
 - Batería/fuente de alimentación
 
-**[📖 Ver documentación completa del ESP32](./esp32-robot/README.md)**
+**[📖 Ver documentación completa del ESP32](./esp32-robot-refactored/README.md)**
 
 ---
 
@@ -89,12 +89,12 @@ Interfaz web desarrollada en React para control y monitoreo del robot.
 ### 1️⃣ Configurar el ESP32
 
 ```bash
-cd esp32-robot
+cd esp32-robot-refactored
 
 # Seguir instrucciones de instalación en el README
 # 1. Flashear MicroPython
-# 2. Subir main_2wd.py al ESP32
-# 3. Configurar credenciales WiFi
+# 2. Subir archivos del directorio src/ al ESP32
+# 3. Configurar credenciales WiFi en config.py
 # 4. Reiniciar ESP32
 ```
 
@@ -227,11 +227,12 @@ GND       →    GND
 
 ### Configurar WiFi del ESP32
 
-Editar `esp32-robot/main_2wd.py`:
+Editar `esp32-robot-refactored/src/config.py`:
 
 ```python
-ssid = "TU_SSID"       # ← Nombre de tu WiFi
-pwd = "TU_PASSWORD"    # ← Contraseña
+WIFI_SSID = "TU_SSID"           # ← Nombre de tu WiFi
+WIFI_PASSWORD = "TU_PASSWORD"    # ← Contraseña
+SECURITY_TOKEN = "tu-token-seguro-aqui"  # ← Token único y seguro
 ```
 
 ### Configurar IP en el Dashboard
@@ -264,7 +265,7 @@ export const ROBOT_IP = "192.168.43.200"; // IP del ESP32
 - Comprobar TRIG → GPIO5, ECHO → GPIO18
 - Verificar GND común entre ESP32 y sensor
 
-**[📖 Ver guía completa de troubleshooting](./esp32-robot/README.md#troubleshooting)**
+**[📖 Ver guía completa de troubleshooting](./esp32-robot-refactored/README.md#troubleshooting)**
 
 ## Especificaciones Técnicas
 
@@ -284,14 +285,19 @@ export const ROBOT_IP = "192.168.43.200"; // IP del ESP32
 ```
 Robot-2WD/
 ├── README.md                    # 📄 Este archivo
-├── esp32-robot/                 # 🔧 Backend ESP32
-│   ├── main_2wd.py             # Código MicroPython
-│   └── README.md               # Documentación técnica completa
-├── robot-dashboard/             # 💻 Frontend React
-│   ├── src/                    # Código fuente React
-│   ├── package.json            # Dependencias npm
-│   └── README.md               # Documentación del dashboard
-└── .venv/                       # Entorno virtual Python (local)
+├── esp32-robot-refactored/      # 🔧 Backend ESP32
+│   ├── src/                    # Código fuente MicroPython
+│   │   ├── main.py            # Script principal
+│   │   ├── config.py          # Configuración
+│   │   ├── http_server.py     # Servidor HTTP
+│   │   └── ...                # Otros módulos
+│   ├── SETUP.md               # Guía de configuración segura
+│   └── README.md              # Documentación técnica completa
+├── robot-dashboard/            # 💻 Frontend React
+│   ├── src/                   # Código fuente React
+│   ├── package.json           # Dependencias npm
+│   └── README.md              # Documentación del dashboard
+└── .venv/                      # Entorno virtual Python (local)
 ```
 
 ## Roadmap
@@ -321,7 +327,8 @@ Este proyecto es de código abierto y está disponible bajo licencia libre. Pued
 ## Recursos Adicionales
 
 ### Documentación
-- [📖 Documentación completa del ESP32](./esp32-robot/README.md)
+- [📖 Documentación completa del ESP32](./esp32-robot-refactored/README.md)
+- [📖 Guía de configuración segura](./esp32-robot-refactored/SETUP.md)
 - [📖 Documentación del Dashboard](./robot-dashboard/README.md)
 
 ### Enlaces Útiles
