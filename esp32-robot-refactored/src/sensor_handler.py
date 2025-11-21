@@ -10,7 +10,8 @@ Example:
     >>> if sensor.is_obstacle_detected(threshold_cm=15):
     ...     print("Obstáculo detectado")
 """
-from machine import Pin, time_pulse_us
+from machine import Pin
+import machine
 import time
 import config
 
@@ -75,7 +76,7 @@ class UltrasonicSensor:
             self.trig.value(0)
 
             # Medir duración del pulso de retorno
-            duration = time_pulse_us(self.echo, 1, config.ULTRASONIC_TIMEOUT)
+            duration = machine.time_pulse_us(self.echo, 1, config.ULTRASONIC_TIMEOUT)
 
             # Validar que no hubo timeout
             if duration < 0:
